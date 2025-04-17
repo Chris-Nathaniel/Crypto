@@ -4,7 +4,7 @@ from django import forms
 # Create your models here.
 class Wallet(models.Model):
     session_id = models.CharField(max_length=255, unique=True)
-    token = models.CharField(max_length=64, unique=True)
+    token = models.CharField(max_length=64)
     balance = models.DecimalField(max_digits=60, decimal_places=0)
     quantity = models.DecimalField(max_digits=60, decimal_places=3)
     average_price = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
