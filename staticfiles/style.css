@@ -24,7 +24,6 @@ body{
 
 .col {
     background-color: rgb(28, 37, 51);
-
 }
 
 .row {
@@ -140,11 +139,16 @@ th {
 }
 
 .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgb(28, 37, 51);
+    border-top: 1px solid #ccc; 
+    z-index: 1000;
 }
 
 .footer > button {
@@ -153,7 +157,7 @@ th {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
+    height: 40px;
     border: 1px solid black;
     border-radius: 5px;
     padding: 0 10px;
@@ -161,7 +165,7 @@ th {
     text-decoration: none;
     background-color: #f8f8f8;
     color: black;
-    margin:10px
+    margin:5px
 }
 
 .footer  #buy {

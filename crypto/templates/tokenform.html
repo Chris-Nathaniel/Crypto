@@ -33,6 +33,13 @@
                 <div class="error" style="color:red">{{ tokenForm.percentage.errors }}</div>
             {% endif %}
         </div>
+        <div class="footer">
+            {% if mode == 'buy' %}
+                <button type="submit" form="token-form" id="buy" name="buy">Buy</button>
+            {% else %}
+                <button type="submit" form="token-form" id="sell" name="sell">Sell</button>
+            {% endif %}
+        </div>
     </form>
 </div>
 <div class="small-menu">
