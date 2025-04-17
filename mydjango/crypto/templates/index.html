@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %}
+    <title>Crypto Analyzer</title>
+{% endblock %}
+{% load static %}
+
+{% block content %}
+{% include 'tokenform.html' %}
+<br>
+{% include 'simulation.html' %}
+{% endblock %}
+
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock %}

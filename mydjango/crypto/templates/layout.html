@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <script src="{% static 'script.js' %}"></script>
+    {% block title %}
+    {% endblock %}
+</head>
+<body>
+    <div class="header">
+        <h1>Crypto Tools</h1>
+    </div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{% url 'crypto:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Home</a></li>
+            <li><a href="{% url 'crypto:transaction' %}" {% if request.resolver_match.url_name == 'transaction' %}class="active"{% endif %}>Transaction</a></li>
+            <li><a href="{% url 'crypto:wallet' %}" {% if request.resolver_match.url_name == 'wallet' %}class="active"{% endif %}>Wallet</a></li>
+        </ul>
+    </nav>
+    <div class="content-container">
+        <div id="main-content" class="slide-in">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    {% block footer %}
+    {% endblock %}
+    
+</html>

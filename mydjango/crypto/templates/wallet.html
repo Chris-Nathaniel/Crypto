@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}
+    <title>Wallet</title>
+{% endblock %}
+
+{% block content %}
+<div class="col" style="padding:10px">
+    <div class=smallheader>
+        <h2>Wallet:</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Token</th>
+                <th>Balance</th>
+                <th>Quantity</th>
+                <th>Average Price</th>
+        </thead>
+        <tbody>
+            {% for token in wallet %}
+            <tr>
+                <td>{{ token.token }}</td>
+                <td>{{ token.balance|intcomma }}</td>
+                <td>{{ token.quantity|intcomma }}</td>
+                <td>{{ token.average_price|intcomma }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

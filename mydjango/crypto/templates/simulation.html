@@ -1,0 +1,41 @@
+{% load humanize %}
+<div class="col" style="padding:10px">
+    <div class="smallheader">
+        <h2>Yield Estimator</h2>
+    </div>
+    <!-- Yield Slider -->
+    <div class="yield-slider">
+        <h3>-100 %</h3>
+        <div class="input-wrapper">
+            <input type="range" id="priceChange" class="range-slide" min="-100" max="100" value="0" step="0.1" oninput="yieldSlider()">
+            <div class="tooltip"></div>
+        </div>
+        <h3>100 %</h3>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Token</th>
+                <th>Balance</th>
+                <th>Average Price</th>
+                <th>Selling Price</th>
+                <th>Gains/Losses</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for token in wallet %}
+            <tr>
+                <td>{{ token.token }}</td>
+                <td class="balance">{{ token.balance|intcomma }}</td>
+                <td>{{ token.average_price|intcomma }}</td>
+                <td class="selling" data-item-quantity="{{token.quantity}}">-</td>
+                <td class="gains">-</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    
+</script>

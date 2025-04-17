@@ -1,0 +1,42 @@
+<div class="col" style="padding:5px">
+    <form id="token-form" action="{% url 'crypto:process_token' %}" method="post">
+        {% csrf_token %}
+        <div class="formInput">
+            <label for="{{ tokenForm.token.id_for_label }}" style="display: block; font-weight: bold;">Token</label>
+            {{ tokenForm.token }}
+            {% if tokenForm.token.errors %}
+                <div class="error" style="color:red">{{ tokenForm.token.errors }}</div>
+            {% endif %}
+                
+        </div>
+        <div class="formInput">
+            <label for="{{ tokenForm.price.id_for_label }}" style="display: block; font-weight: bold;">Price</label>
+            {{ tokenForm.price }}
+        </div>
+        <div class="formInput {% if mode == 'buy' %}show{% else %}hide{% endif %}">
+            <label for="{{ tokenForm.amount.id_for_label }}" style="display: block; font-weight: bold;">Amount</label>
+            {{ tokenForm.amount }}
+        </div>
+        <div class="formInput {% if mode == 'buy' %}hide{% else %}show{% endif %}">
+            <label for="{{ tokenForm.percentage.id_for_label }}" style="display: block; font-weight: bold;">Percentage</label>
+            <div  style="display: flex; flex-direction: row; width: 100%; margin: 15px 0;">
+                <div class="input-wrapper">
+                    <!-- Slider -->
+                    <input type="range" id="percentage-slider" class="percentage-slider" name="percentage-slider" min="0" max="100" value="{{ tokenForm.percentage.value }}" style="flex: 1;" />
+                    </div>
+                    <!-- Manual Input for Percentage -->
+                    <input type="number" id="percentage-input" name="percentage" min="0" max="100" value="{{ tokenForm.percentage.value }}" style="width: 50px;">
+                    <span style="color:white; margin-left:5px;">%</span>
+                </div>
+            </div>
+            {% if tokenForm.percentage.errors %}
+                <div class="error" style="color:red">{{ tokenForm.percentage.errors }}</div>
+            {% endif %}
+        </div>
+    </form>
+</div>
+<div class="small-menu">
+    <a href="{% url 'crypto:index' %}?buy=true" class="{% if mode == 'buy' %}active{% endif %}">Buy</a>
+    <a href="{% url 'crypto:index' %}?sell=true" class="{% if mode == 'sell' %}active{% endif %}">Sell</a>
+</div>
+
