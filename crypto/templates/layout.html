@@ -12,10 +12,10 @@
 <body>
     <div class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; overflow:hidden;">
         <h1>Crypto Tools</h1>
-        <p style="color: white; display: flex; align-items: center; font-size: 14px; margin: 0;">
+        <div style="background-color: rgba(0, 0, 0, 0.492); color: white; display: flex; align-items: center; font-size: 14px; margin: 0; padding: 5px;">
             <img style="width: 40px; height: 40px; margin-right: 5px;" src="{% static 'images/profile.png' %}" alt="Logo">
             Guest_id: {{ session_id|slice:":5" }}...{{ session_id|slice:"-5:" }}
-        </p>
+        </div>
     </div>
     <nav>
         <ul class="nav-links">
