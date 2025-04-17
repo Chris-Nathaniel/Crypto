@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'crypto-89ti.onrender.com',
+    'crypto-mr7e.onrender.com',
 ]
 
 
