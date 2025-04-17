@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6aa2g-j4%o7zi*mq3e3foclas)d0evkv6##t+me3kl@%gbv929'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -32,7 +32,10 @@ ALLOWED_HOSTS = [
     'crypto-mr7e.onrender.com',
 ]
 
+SESSION_COOKIE_AGE = 86400 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 CSRF_TRUSTED_ORIGINS = ['https://crypto-mr7e.onrender.com/']
+
 
 # Application definition
 
