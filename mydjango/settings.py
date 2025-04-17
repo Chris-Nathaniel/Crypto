@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     'crypto-mr7e.onrender.com',
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://crypto-mr7e.onrender.com/']
 
 # Application definition
 
