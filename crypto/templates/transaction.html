@@ -6,32 +6,37 @@
 {% load humanize %}
 <div class="col" style="padding:10px">
     <div class=smallheader>
-        <h2>Transactions history:</h2>
+        <h2>Transactions history</h2>
     </div>
     <table>
         <thead>
             <tr>
                 <th>Token</th>
-                <th>Price</th>
                 <th>Type</th>
                 <th>Amount</th>
-                <th>Quantity</th>
                 <th>Date</th>
             </tr>
         </thead>
         <tbody>
             {% for transaction in transactions|slice:"::-1" %}
-                <tr>
-                    <td>{{ transaction.token }}</td>
-                    <td>{{ transaction.price|intcomma }}</td>
-                    <td class="{% if transaction.transaction_type == 'buy'%} green {% else %} red {% endif %}">{{ transaction.transaction_type|title }}</td>
-                    <td>{{ transaction.amount|intcomma }}</td>
-                    <td>{{ transaction.quantity|intcomma }}</td>
-                    <td>{{ transaction.date|date:"d-m-y" }}</td>
-                </tr>
+            <tr>
+                <td>{{ transaction.token }}</td>
+                <td class="{% if transaction.transaction_type == 'buy'%} green {% else %} red {% endif %}">
+                    {{ transaction.transaction_type|title }}
+                </td>
+                <td>
+                    <strong>{{ transaction.amount|intcomma }}</strong><br>
+                    <small>
+                        Price: {{ transaction.price|intcomma }} |
+                        Qty: {{ transaction.quantity|intcomma }}
+                    </small>
+                </td>
+                <td>{{ transaction.date|date:"d-m-y" }}</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
+    
 </div>
 
 {% endblock %}

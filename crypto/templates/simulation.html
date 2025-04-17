@@ -17,8 +17,7 @@
             <tr>
                 <th>Token</th>
                 <th>Balance</th>
-                <th>Average Price</th>
-                <th>Selling Price</th>
+                <th>Prices</th>
                 <th>Gains/Losses</th>
             </tr>
         </thead>
@@ -27,13 +26,16 @@
             <tr>
                 <td>{{ token.token }}</td>
                 <td class="balance">{{ token.balance|intcomma }}</td>
-                <td>{{ token.average_price|intcomma }}</td>
-                <td class="selling" data-item-quantity="{{token.quantity}}">-</td>
+                <td>
+                    Avg: {{ token.average_price|intcomma }}<br>
+                    Sell: <span class="selling" data-item-quantity="{{token.quantity}}">-</span>
+                </td>
                 <td class="gains">-</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    
 </div>
 
 <script>
