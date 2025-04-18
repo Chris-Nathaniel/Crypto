@@ -113,9 +113,22 @@ th {
 }
 
 .roi {
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 5px;
-    background-color: #aaa;
+    background-color: #121111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.roi.green {
+    background-color: rgb(65, 150, 65);
+    color: white;
+}
+
+.roi.red {
+    background-color: rgb(150, 65, 65);
+    color: white;
 }
 
 /* ================================
