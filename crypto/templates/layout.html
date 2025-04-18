@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'style.css' %}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script src="{% static 'script.js' %}"></script>
     {% block title %}
     {% endblock %}
@@ -12,10 +13,14 @@
 <body>
     <div class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; overflow:hidden;">
         <h1>Crypto Tools</h1>
-        <div style="background-color: rgba(0, 0, 0, 0.492); color: white; display: flex; align-items: center; font-size: 14px; margin: 0; padding: 5px;">
-            <img style="width: 40px; height: 40px; margin-right: 5px;" src="{% static 'images/profile.png' %}" alt="Logo">
-            Guest_id: {{ session_id|slice:":5" }}...{{ session_id|slice:"-5:" }}
-        </div>
+        <div class="profile-wrapper">
+            <a href="{% url 'crypto:reset_session' %}"><i class="fas fa-sync" style="color:white; margin: 10px;"></i></a>
+            <div style="background-color: rgba(0, 0, 0, 0.492); color: white; display: flex; align-items: center; font-size: 14px; margin: 0; padding: 5px;">         
+                <!--refresh icon with fsa-icon-->
+                <img style="width: 40px; height: 40px; margin-right: 5px;" src="{% static 'images/profile.png' %}" alt="Logo">
+                Guest_id: {{ session_id|slice:":5" }}...{{ session_id|slice:"-5:" }}
+            </div>
+        </div>  
     </div>
     <nav>
         <ul class="nav-links">

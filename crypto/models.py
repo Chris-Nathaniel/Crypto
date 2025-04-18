@@ -8,9 +8,10 @@ class Wallet(models.Model):
     balance = models.DecimalField(max_digits=60, decimal_places=0)
     quantity = models.DecimalField(max_digits=60, decimal_places=3)
     average_price = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
+    return_on_investment = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return f"{self.token}, {self.balance}, {self.quantity}, {self.average_price}"
+        return f"{self.token}, {self.balance}, {self.quantity}, {self.average_price}, {self.return_on_investment}"
 
 class Transaction(models.Model):
     session_id = models.CharField(max_length=255)

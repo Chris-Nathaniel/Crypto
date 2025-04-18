@@ -58,7 +58,7 @@ def wallet_view(request):
         request.session.create() 
         session_id = request.session.session_key
 
-    wallet = Wallet.objects.filter(session_id=session_id).exclude(quantity=0).order_by('-quantity')
+    wallet = Wallet.objects.filter(session_id=session_id).order_by('-quantity')
     return render(request, 'wallet.html', {'wallet': wallet, 'session_id': session_id})
 
 def buy_token(form, fee, id):
@@ -92,12 +92,21 @@ def sell_token(form, fee, id):
         wallet_token = Wallet.objects.get(session_id=id, token=token.upper())
         quantitySold = wallet_token.quantity * percentageAmount
         amountSold = quantitySold * wallet_token.average_price * Decimal(1 + baseCost)
-        fee_decimal = Decimal(str(fee))  
-
+        fee_decimal = Decimal(str(fee)) 
+        tradeReturn = round(((price * fee_decimal - wallet_token.average_price)) * quantitySold, 2) if wallet_token.quantity > 0 else Decimal('0')
+        print(f"Quantity sold: {quantitySold}, Amount sold: {amountSold}, Price: {price}, Fee: {fee_decimal}, Trade return: {tradeReturn}, average price: {wallet_token.average_price}")
+       
         transaction = Transaction(session_id=id, token=token.upper(), price=price, transaction_type="sell", amount=quantitySold * fee_decimal * price, quantity=quantitySold)
         transaction.save()
         wallet_token.quantity -= quantitySold
         wallet_token.balance -= amountSold if wallet_token.balance > amountSold else wallet_token.balance
         wallet_token.average_price = round(wallet_token.balance/Decimal(1+baseCost)/wallet_token.quantity) if wallet_token.quantity > 0 else Decimal('0')
+        wallet_token.return_on_investment += tradeReturn
         wallet_token.save()
 
+def reset_session(request):
+    # clear the current session id
+    request.session.flush()
+    # create a new session id
+    request.session.create()
+    return HttpResponseRedirect(reverse("crypto:index"))
