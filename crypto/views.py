@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from crypto.models import Wallet, Transaction, tokenForm
 from decimal import Decimal
+from django.contrib.auth import logout
 
 baseCost = 0.0033
 
@@ -110,3 +111,8 @@ def reset_session(request):
     # create a new session id
     request.session.create()
     return HttpResponseRedirect(reverse("crypto:index"))
+
+def logout_view(request):
+    # clear the current session id
+    request.session.flush()
+    return redirect('index')

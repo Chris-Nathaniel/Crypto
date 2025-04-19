@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Continue with Google</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --primary-color: #4285F4;
+            --bg-color: #f5f7fa;
+            --text-color: #333;
+            --button-hover: #3367d6;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        h2 {
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .google-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .google-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Sign in with Google</h2>
+        <p>You're about to continue with your Google account. Click below to proceed.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="google-btn">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                Continue with Google
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
+

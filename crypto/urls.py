@@ -8,5 +8,7 @@ urlpatterns = [
     path('transaction/', views.transaction_view, name='transaction'),
     path('wallet/', views.wallet_view, name='wallet'),
     path("reset_session/", views.reset_session, name="reset_session"),
+    path("logout/", views.logout_view, name="logout"),
+
     
 ]

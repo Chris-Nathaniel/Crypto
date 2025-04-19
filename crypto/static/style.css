@@ -4,6 +4,11 @@ body{
     padding:0px;
 }
 
+a {
+    text-decoration: none;
+    color: white;
+}
+
 .header > h1 {
     color: white
 }
@@ -34,12 +39,36 @@ body{
     margin: 10px;
 }
 
+/* ================================
+   =========== Profile ============
+   ================================ */
+
 .profile-wrapper{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.profile {
+        background-color: rgba(0, 0, 0, 0.492);
+        color: white;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        margin: 0;
+        padding: 5px;
+    }
+
+.profile-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-detail > a {
+    font-size: 10px;
+    margin: 5px;
+    text-decoration: underline;
+}
 /* ================================
    =========== NAVBAR ============
    ================================ */
@@ -119,6 +148,7 @@ th {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 12px;
 }
 
 .roi.green {
