@@ -14,28 +14,33 @@
 <body>
     
     <div class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; overflow:hidden;">
-        <h1>Crypto Tools</h1>
+        <h1>Keizan</h1>
         <div class="profile-wrapper" style="padding: 10px;">
             <a href="{% url 'crypto:reset_session' %}">
                 <i class="fas fa-sync" style="color:white; margin: 10px;"></i>
             </a>
             
             <div class="profile" style="display: flex; align-items: center; gap: 12px; border-radius: 5px;">
-                <!-- Profile icon -->
+
                 <img src="{% static 'images/profile.png' %}" alt="Profile" style="width: 40px; height: 40px;">
                 
                 <div class="profile-detail" style="display: flex; flex-direction: column;">
+                    {% if user.is_authenticated %}
+                    <div style="font-size: 13px; color: #ddd;">
+                        {{ user.email }}     
+                    </div>
+                    <a href="{% url 'crypto:logout' %}">Log out</a>
+                    {% else %}
                     <div style="font-size: 13px; color: #ddd;">
                         Guest ID: {{ session_id|slice:":5" }}...{{ session_id|slice:"-5:" }}
                     </div>
-        
-                    <!-- Smaller Google Sign-In button -->
                     <a href="{% provider_login_url 'google' %}?next=/"
                        style="display: inline-flex; align-items: center; background-color: #fff; color: #444; padding: 4px 8px; border: 1px solid #ccc; border-radius: 3px; font-weight: 500; font-size: 11px; text-decoration: none; box-shadow: 0 1px 1px rgba(0,0,0,0.08); margin-top: 5px;">
                         <img src="https://developers.google.com/identity/images/g-logo.png"
                              style="height: 14px; width: 14px; margin-right: 6px;">
                         Google Sign In
                     </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

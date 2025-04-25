@@ -9,6 +9,6 @@ urlpatterns = [
     path('wallet/', views.wallet_view, name='wallet'),
     path("reset_session/", views.reset_session, name="reset_session"),
     path("logout/", views.logout_view, name="logout"),
+    path("delete_transaction/<int:id>", views.delete_transaction, name="delete_transaction"),
 
-    
 ]

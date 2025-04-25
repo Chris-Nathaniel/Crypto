@@ -1,32 +1,32 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from crypto.models import Wallet, Transaction, tokenForm
 from decimal import Decimal
 from django.contrib.auth import logout
+from .helpers import user_authenticated
 
 baseCost = 0.0033
 
 # Create your views here.
+@user_authenticated
 def index(request):
-    session_id = request.session.session_key
-    if not session_id:
-        request.session.create()
-        session_id = request.session.session_key
+    user = request.session.get("user")
+
     if 'sell' in request.GET:
         request.session["mode"] = 'sell'
     else:
         request.session["mode"] = 'buy'
-    wallet = Wallet.objects.filter(session_id=session_id).exclude(quantity=0).order_by('-quantity')
-    return render(request, 'index.html', {'tokenForm': tokenForm(), 'mode': request.session["mode"], 'wallet': wallet, 'session_id': session_id})
 
+    wallet = Wallet.objects.filter(session_id=user).exclude(quantity=0).order_by('-quantity')
+
+    return render(request, 'index.html', {'tokenForm': tokenForm(), 'mode': request.session["mode"], 'wallet': wallet, 'session_id': user})
+
+@user_authenticated
 def process_token(request):
     global baseCost
     if request.method == 'POST':
-        session_id = request.session.session_key
-        if not session_id:
-            request.session.create()
-            session_id = request.session.session_key
+        user = request.session.get("user")
         form = tokenForm(request.POST)
         if form.is_valid():
             token = form.cleaned_data["token"]
@@ -34,33 +34,29 @@ def process_token(request):
         fee = 1 + baseCost if mode == 'buy' else 1 - baseCost
         try:
             if mode.lower() == "buy":
-                buy_token(form, fee, session_id)
+                buy_token(form, fee, user)
             else:
-                sell_token(form, fee, session_id)
+                sell_token(form, fee, user)
 
         except Wallet.DoesNotExist:
             form.add_error("token", f"Token {token} not found in wallet.")
             return render(request, "index.html", {'tokenForm': form})
             
-        return HttpResponseRedirect(reverse("crypto:index"))
-
-def transaction_view(request):
-    session_id = request.session.session_key
-    if not session_id:
-        request.session.create()
-        session_id = request.session.session_key
-    transactions = Transaction.objects.filter(session_id=request.session.session_key)
-    return render(request, 'transaction.html', {'transactions': transactions, 'session_id': session_id})
-
-def wallet_view(request):
-    session_id = request.session.session_key  
+        return redirect("crypto:index")
     
-    if not session_id: 
-        request.session.create() 
-        session_id = request.session.session_key
+@user_authenticated
+def transaction_view(request):
+    user = request.session.get("user")
+    
+    transactions = Transaction.objects.filter(session_id=user).order_by('-date')
+    return render(request, 'transaction.html', {'transactions': transactions, 'session_id': user})
 
-    wallet = Wallet.objects.filter(session_id=session_id).order_by('-quantity')
-    return render(request, 'wallet.html', {'wallet': wallet, 'session_id': session_id})
+@user_authenticated
+def wallet_view(request):
+    user = request.session.get("user")
+
+    wallet = Wallet.objects.filter(session_id=user).order_by('-quantity')
+    return render(request, 'wallet.html', {'wallet': wallet, 'session_id': user})
 
 def buy_token(form, fee, id):
     global baseCost
@@ -105,6 +101,19 @@ def sell_token(form, fee, id):
         wallet_token.return_on_investment += tradeReturn
         wallet_token.save()
 
+def delete_transaction(request, id):
+    user = request.session.get("user")
+    transaction = get_object_or_404(Transaction, id=id, session_id=user)
+    wallet = Wallet.objects.get(session_id=user, token=transaction.token)
+    if transaction.transaction_type == "buy":
+        wallet.balance -= transaction.amount
+        wallet.quantity -= transaction.quantity
+        wallet.average_price = round(wallet.balance*Decimal(1-baseCost)/wallet.quantity) if wallet.quantity > 0 else Decimal('0')
+        wallet.save()
+        transaction.delete()
+
+    return redirect("crypto:transaction")
+
 def reset_session(request):
     # clear the current session id
     request.session.flush()
@@ -115,4 +124,4 @@ def reset_session(request):
 def logout_view(request):
     # clear the current session id
     request.session.flush()
-    return redirect('index')
+    return redirect('crypto:index')

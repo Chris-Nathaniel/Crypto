@@ -71,6 +71,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 MIDDLEWARE = [
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,7 +80,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
+    
 ]
 
 ROOT_URLCONF = 'mydjango.urls'
@@ -164,6 +165,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = '/'
 
+SOCIALACCOUNT_LOGIN_ON_GET = True
