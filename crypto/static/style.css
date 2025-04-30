@@ -419,4 +419,15 @@ th {
       transform: translateX(0);
     }
   }
-  
+
+  .flash-green {
+    color: #28a745; /* Green */
+    font-weight: bold;
+    transition: color 0.5s ease;
+}
+
+.flash-red {
+    color: #df3d4d; /* Red */
+    font-weight: bold;
+    transition: color 0.5s ease;
+}

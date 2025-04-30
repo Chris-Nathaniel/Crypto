@@ -73,6 +73,7 @@
             <li><a href="{% url 'crypto:index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>Home</a></li>
             <li><a href="{% url 'crypto:transaction' %}" {% if request.resolver_match.url_name == 'transaction' %}class="active"{% endif %}>Transaction</a></li>
             <li><a href="{% url 'crypto:wallet' %}" {% if request.resolver_match.url_name == 'wallet' %}class="active"{% endif %}>Wallet</a></li>
+            <li><a href="{% url 'crypto:coins' %}" {% if request.resolver_match.url_name == 'coins' %}class="active"{% endif %}>Coins</a></li>
         </ul>
     </nav>
     <div class="content-container">

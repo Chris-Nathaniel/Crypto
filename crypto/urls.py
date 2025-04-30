@@ -10,5 +10,7 @@ urlpatterns = [
     path("reset_session/", views.reset_session, name="reset_session"),
     path("logout/", views.logout_view, name="logout"),
     path("delete_transaction/<int:id>", views.delete_transaction, name="delete_transaction"),
+    path("coins/", views.coins_view, name="coins"),
+    path('tickers-api/', views.tickers_api, name='tickers_api'),
 
 ]

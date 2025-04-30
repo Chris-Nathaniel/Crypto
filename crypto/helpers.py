@@ -1,4 +1,5 @@
 from functools import wraps
+import requests
 
 def user_authenticated(func):
     @wraps(func)
@@ -16,3 +17,14 @@ def user_authenticated(func):
         
         return func(request, *args, **kwargs)
     return wrapper
+
+def get_indodax_tickers():
+    url = 'https://indodax.com/api/tickers'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data['tickers']
+    else:
+        print(f"Error: {response.status_code}")
+        return None
+    

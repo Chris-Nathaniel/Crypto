@@ -5,9 +5,12 @@ from django.contrib import messages
 from crypto.models import Wallet, Transaction, tokenForm
 from decimal import Decimal
 from django.contrib.auth import logout
-from .helpers import user_authenticated
+from .helpers import user_authenticated, get_indodax_tickers
+from django import template
+from django.http import JsonResponse
 
 baseCost = 0.0033
+register = template.Library()
 
 @user_authenticated
 def index(request):
@@ -140,6 +143,15 @@ def delete_transaction(request, id):
 
     return redirect("crypto:transaction")
 
+def coins_view(request):
+
+    return render(request, 'coins.html')
+
+
+def tickers_api(request):
+    tickers = get_indodax_tickers()
+    return JsonResponse({'tickers': tickers})
+
 def reset_session(request):
     # clear the current session id
     request.session.flush()
@@ -151,3 +163,4 @@ def logout_view(request):
     # clear the current session id
     request.session.flush()
     return redirect('crypto:index')
+
