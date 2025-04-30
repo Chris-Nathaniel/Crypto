@@ -3,7 +3,7 @@ from django import forms
 
 # Create your models here.
 class Wallet(models.Model):
-    session_id = models.CharField(max_length=255, unique=True)
+    session_id = models.CharField(max_length=255)
     token = models.CharField(max_length=64)
     balance = models.DecimalField(max_digits=60, decimal_places=0)
     quantity = models.DecimalField(max_digits=60, decimal_places=3)
@@ -19,7 +19,8 @@ class Transaction(models.Model):
     price = models.DecimalField(max_digits=25, decimal_places=2)
     transaction_type = models.CharField(max_length=25, choices=[("buy", "Buy"), ("sell", "Sell")])
     amount = models.DecimalField(max_digits=25, decimal_places=0)
-    quantity = models.DecimalField(max_digits=25, decimal_places=3)  
+    quantity = models.DecimalField(max_digits=25, decimal_places=3)
+    cogs = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)  
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

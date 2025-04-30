@@ -13,24 +13,46 @@
 </head>
 <body>
     
+    {% if messages %}
+    <div class="custom-toast-container">
+        {% for message in messages %}
+        <div class="custom-toast custom-toast-{{ message.tags }}">
+            <div class="custom-toast-body">
+            <span class="toast-text">{{ message }}</span>
+            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">✖</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    
     <div class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; overflow:hidden;">
         <h1>Keizan</h1>
         <div class="profile-wrapper" style="padding: 10px;">
+            {% if not user.is_authenticated %}
             <a href="{% url 'crypto:reset_session' %}">
                 <i class="fas fa-sync" style="color:white; margin: 10px;"></i>
             </a>
-            
+            {% endif %}
+            {% if user.is_authenticated %}
             <div class="profile" style="display: flex; align-items: center; gap: 12px; border-radius: 5px;">
-
-                <img src="{% static 'images/profile.png' %}" alt="Profile" style="width: 40px; height: 40px;">
+                {% with google_avatar=user.socialaccount_set.first.extra_data.picture %}
+                    <img src="{{ google_avatar }}" alt="Profile" style="width: 40px; height: 40px; border-radius: 50%;">
+                {% endwith %}
                 
                 <div class="profile-detail" style="display: flex; flex-direction: column;">
-                    {% if user.is_authenticated %}
                     <div style="font-size: 13px; color: #ddd;">
                         {{ user.email }}     
                     </div>
                     <a href="{% url 'crypto:logout' %}">Log out</a>
-                    {% else %}
+                </div>
+            </div>
+            {% else %}
+            <div class="profile" style="display: flex; align-items: center; gap: 12px; border-radius: 5px;">
+                <img src="{% static 'images/profile.png' %}" alt="Profile" style="width: 40px; height: 40px;">
+                
+                <div class="profile-detail" style="display: flex; flex-direction: column;">
                     <div style="font-size: 13px; color: #ddd;">
                         Guest ID: {{ session_id|slice:":5" }}...{{ session_id|slice:"-5:" }}
                     </div>
@@ -40,9 +62,9 @@
                              style="height: 14px; width: 14px; margin-right: 6px;">
                         Google Sign In
                     </a>
-                    {% endif %}
                 </div>
             </div>
+            {% endif %}
         </div>
         
     </div>

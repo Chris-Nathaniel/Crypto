@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect,  get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import messages
 from crypto.models import Wallet, Transaction, tokenForm
 from decimal import Decimal
 from django.contrib.auth import logout
@@ -8,7 +9,6 @@ from .helpers import user_authenticated
 
 baseCost = 0.0033
 
-# Create your views here.
 @user_authenticated
 def index(request):
     user = request.session.get("user")
@@ -85,30 +85,56 @@ def sell_token(form, fee, id):
         token = form.cleaned_data["token"]
         price = Decimal(form.cleaned_data["price"])
         percentageAmount = Decimal(form.cleaned_data["percentage"]) / Decimal('100')
-
+        amount_input = form.cleaned_data.get("amount")
+         
         wallet_token = Wallet.objects.get(session_id=id, token=token.upper())
+        if amount_input:  
+            percentageAmount = Decimal(amount_input) / wallet_token.balance
+
+        fee_decimal = Decimal(str(fee))
         quantitySold = wallet_token.quantity * percentageAmount
-        amountSold = quantitySold * wallet_token.average_price * Decimal(1 + baseCost)
-        fee_decimal = Decimal(str(fee)) 
-        tradeReturn = round(((price * fee_decimal - wallet_token.average_price)) * quantitySold, 2) if wallet_token.quantity > 0 else Decimal('0')
-        print(f"Quantity sold: {quantitySold}, Amount sold: {amountSold}, Price: {price}, Fee: {fee_decimal}, Trade return: {tradeReturn}, average price: {wallet_token.average_price}")
-       
-        transaction = Transaction(session_id=id, token=token.upper(), price=price, transaction_type="sell", amount=quantitySold * fee_decimal * price, quantity=quantitySold)
-        transaction.save()
-        wallet_token.quantity -= quantitySold
-        wallet_token.balance -= amountSold if wallet_token.balance > amountSold else wallet_token.balance
-        wallet_token.average_price = round(wallet_token.balance/Decimal(1+baseCost)/wallet_token.quantity) if wallet_token.quantity > 0 else Decimal('0')
-        wallet_token.return_on_investment += tradeReturn
-        wallet_token.save()
+        cogs = quantitySold * wallet_token.average_price * Decimal(1 + baseCost)
+        revenue = quantitySold * price * fee_decimal
+        tradeReturn = round(revenue - cogs, 2) if wallet_token.quantity > 0 else Decimal('0')
+
+        if quantitySold <= wallet_token.quantity:
+            transaction = Transaction(session_id=id, token=token.upper(), price=price, transaction_type="sell", amount=revenue, quantity=quantitySold, cogs=cogs)
+            transaction.save()
+            wallet_token.quantity -= quantitySold
+            wallet_token.balance -= cogs if wallet_token.balance > cogs else wallet_token.balance
+            wallet_token.average_price = round(wallet_token.balance/Decimal(1+baseCost)/wallet_token.quantity) if wallet_token.quantity > 0 else Decimal('0')
+            wallet_token.return_on_investment += tradeReturn
+            wallet_token.save()
 
 def delete_transaction(request, id):
     user = request.session.get("user")
     transaction = get_object_or_404(Transaction, id=id, session_id=user)
     wallet = Wallet.objects.get(session_id=user, token=transaction.token)
+    
     if transaction.transaction_type == "buy":
+        # Check if any sell transaction exists after this buy for the same token and user
+        sell_after_buy_exists = Transaction.objects.filter(
+            session_id=user,
+            token=transaction.token,
+            transaction_type="sell",
+            date__gt=transaction.date
+        ).exists()
+
+        if sell_after_buy_exists:
+            messages.error(request, "You can't delete this buy transaction because a sell has already been made after it.")
+            return redirect("crypto:transaction")
+        
         wallet.balance -= transaction.amount
         wallet.quantity -= transaction.quantity
         wallet.average_price = round(wallet.balance*Decimal(1-baseCost)/wallet.quantity) if wallet.quantity > 0 else Decimal('0')
+        wallet.save()
+        transaction.delete()
+
+    if transaction.transaction_type == "sell":
+        wallet.balance += transaction.cogs
+        wallet.quantity += transaction.quantity
+        wallet.average_price = round(wallet.balance*Decimal(1-baseCost)/wallet.quantity) if wallet.quantity > 0 else Decimal('0')   
+        wallet.return_on_investment -= round(transaction.amount - transaction.cogs)
         wallet.save()
         transaction.delete()
 

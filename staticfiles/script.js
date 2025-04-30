@@ -87,6 +87,16 @@ function yieldSlider() {
 }
 
 
+  document.addEventListener('DOMContentLoaded', function () {
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+    toastElList.forEach(function (toastEl) {
+      var toast = new bootstrap.Toast(toastEl, { delay: 5000 });  // Toast auto-hides after 5s
+      toast.show();
+    });
+  });
+
+
+
 
 window.onload = function () {
   yieldSlider();
