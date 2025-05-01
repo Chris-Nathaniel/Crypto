@@ -30,11 +30,12 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'crypto-mr7e.onrender.com',
+    '8000-codeanywhere-templates-p-f7psk61dsw.app.codeanywhere.com'
 ]
 
 SESSION_COOKIE_AGE = 86400 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-CSRF_TRUSTED_ORIGINS = ['https://crypto-mr7e.onrender.com/']
+CSRF_TRUSTED_ORIGINS = ['https://crypto-mr7e.onrender.com/','https://8000-codeanywhere-templates-p-f7psk61dsw.app.codeanywhere.com/']
 
 
 # Application definition
