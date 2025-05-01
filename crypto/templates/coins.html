@@ -69,7 +69,12 @@ function updateTickers() {
 
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${formattedCoin}</td>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <img src="${value.url_logo_png}" alt="${formattedCoin}" style="width: 20px; height: 20px; margin-right: 5px;">
+                            <span>${formattedCoin}</span>
+                        </div>
+                    </td>
                     <td style="text-align: end; font-size: 12px;">
                         <span class="price ${flashClass}">${formatNumber(last)}</span>
                         <br>

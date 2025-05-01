@@ -27,4 +27,12 @@ def get_indodax_tickers():
     else:
         print(f"Error: {response.status_code}")
         return None
-    
+
+def get_indodax_pairs():
+    pairs_url = 'https://indodax.com/api/pairs'
+    response = requests.get(pairs_url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error fetching pairs: {response.status_code}")
+        return []

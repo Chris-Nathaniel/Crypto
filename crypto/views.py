@@ -5,7 +5,7 @@ from django.contrib import messages
 from crypto.models import Wallet, Transaction, tokenForm
 from decimal import Decimal
 from django.contrib.auth import logout
-from .helpers import user_authenticated, get_indodax_tickers
+from .helpers import user_authenticated, get_indodax_tickers, get_indodax_pairs
 from django import template
 from django.http import JsonResponse
 
@@ -144,13 +144,31 @@ def delete_transaction(request, id):
     return redirect("crypto:transaction")
 
 def coins_view(request):
-
     return render(request, 'coins.html')
 
 
 def tickers_api(request):
     tickers = get_indodax_tickers()
-    return JsonResponse({'tickers': tickers})
+    pairs = get_indodax_pairs()
+
+    # Create a mapping from ticker_id to logo URLs
+    logo_map = {
+        pair['ticker_id']: {
+            'url_logo': pair.get('url_logo'),
+            'url_logo_png': pair.get('url_logo_png')
+        }
+        for pair in pairs
+    }
+
+    # Add logo URLs to each ticker if available
+    tickers_with_logos = {}
+    for ticker_id, ticker_data in tickers.items():
+        if ticker_id in logo_map:
+            ticker_data['url_logo'] = logo_map[ticker_id]['url_logo']
+            ticker_data['url_logo_png'] = logo_map[ticker_id]['url_logo_png']
+        tickers_with_logos[ticker_id] = ticker_data
+
+    return JsonResponse({'tickers': tickers_with_logos})
 
 def reset_session(request):
     # clear the current session id
