@@ -54,7 +54,7 @@
                 
                 <div class="profile-detail" style="display: flex; flex-direction: column;">
                     <div style="font-size: 13px; color: #ddd;">
-                        Guest ID: {{ session_id|slice:":5" }}...{{ session_id|slice:"-5:" }}
+                        Has not logged in
                     </div>
                     <a href="{% provider_login_url 'google' %}?next=/"
                        style="display: inline-flex; align-items: center; background-color: #fff; color: #444; padding: 4px 8px; border: 1px solid #ccc; border-radius: 3px; font-weight: 500; font-size: 11px; text-decoration: none; box-shadow: 0 1px 1px rgba(0,0,0,0.08); margin-top: 5px;">
