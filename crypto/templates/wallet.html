@@ -17,7 +17,6 @@
                 <th>Token</th>
                 <th>Balance</th>
                 <th>Quantity</th>
-                <th>Aggregate return</th>
         </thead>
         <tbody>
             {% for token in wallet %}
@@ -28,11 +27,14 @@
                     <br>
                     <small>Avg: {{ token.average_price|intcomma }}</small>
                 </td>
-                <td>{{ token.quantity|intcomma }}</td>
                 <td>
+                    <div style="text-align:end; margin:5px;">
+                        <strong>{{ token.quantity|intcomma }} {{ token.token }}</strong>
+                    </div>   
                     <div class="roi {% if token.return_on_investment > 0 %}green{% elif token.return_on_investment < 0 %}red{% endif %}">
-                        {{ token.return_on_investment|intcomma }} IDR
+                        <small>{{ token.return_on_investment|intcomma }} IDR</small>
                     </div>    
+                
                 </td>
             </tr>
             {% endfor %}
