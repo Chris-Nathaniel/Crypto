@@ -29,6 +29,7 @@ a {
 
 .col {
     background-color: rgb(28, 37, 51);
+    box-sizing: border-box;
 
 }
 
@@ -420,7 +421,7 @@ th {
     }
   }
 
-  .flash-green {
+.flash-green {
     color: #28a745;
     font-weight: bold;
     transition: color 0.5s ease;
@@ -450,4 +451,25 @@ th {
 .form-control:focus {
     border: 1px solid #4f93ff;
     box-shadow: 0 0 5px rgba(79, 147, 255, 0.5);
+}
+
+.greencircle {
+    background-color: #28a745;
+}
+
+.redcircle {
+    background-color: #df3d4d;
+
+}
+
+.circle {
+    border-radius: 25%;
+    display: inline-block;
+    margin-right: 5px;
+    color: white;
+    font-size: 8px;
+    padding: 3px;
+    position: relative;
+    margin: 5px;
+    bottom: 2px;
 }

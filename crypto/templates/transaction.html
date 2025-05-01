@@ -13,7 +13,6 @@
         <thead>
             <tr>
                 <th>Token</th>
-                <th>Type</th>
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Action</th>
@@ -22,12 +21,13 @@
         <tbody>
             {% for transaction in transactions|slice:"::1" %}
             <tr>
-                <td>{{ transaction.token }}</td>
-                <td class="{% if transaction.transaction_type == 'buy' %} green {% else %} red {% endif %}">
-                    {{ transaction.transaction_type|title }}
-                </td>
+                <td>{{ transaction.token }}</td>    
                 <td>
-                    <strong>{{ transaction.amount|intcomma }}</strong><br>
+                    <strong>{{ transaction.amount|intcomma }}</strong>
+                    <span class="circle {% if transaction.transaction_type == 'buy' %} greencircle {% else %} redcircle  {% endif %}">
+                        {{ transaction.transaction_type|title }}
+                    </span>  
+                    <br>
                     <small>
                         Price: {{ transaction.price|intcomma }} |
                         Qty: {{ transaction.quantity|intcomma }}
