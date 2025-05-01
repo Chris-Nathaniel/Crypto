@@ -20,15 +20,17 @@ a {
 .header {
     background-color: rgb(28, 37, 51);
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
     height: 60px;
-    padding:0px 10px;
+    padding:10px;
     margin-bottom: 10px;
+    overflow:hidden;
 }
 
 .col {
     background-color: rgb(28, 37, 51);
+    box-sizing: border-box;
 
 }
 
