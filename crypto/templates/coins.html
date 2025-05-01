@@ -45,12 +45,15 @@ function updateTickers() {
         .then(data => {
             const searchTerm = tokenSearch.value.toLowerCase();
             tbody.innerHTML = '';
+            const tickersArray = Object.entries(data.tickers)
+                .filter(([coin, value]) => {
+                    const formattedCoin = coin.replace('_', '/').toUpperCase();
+                    return formattedCoin.toLowerCase().includes(searchTerm);
+                })
+                .sort((a, b) => parseFloat(b[1].vol_idr) - parseFloat(a[1].vol_idr)); 
 
-            for (const [coin, value] of Object.entries(data.tickers)) {
+            for (const [coin, value] of tickersArray) {
                 const formattedCoin = coin.replace('_', '/').toUpperCase();
-                const coinMatch = formattedCoin.toLowerCase().includes(searchTerm);
-
-                if (!coinMatch) continue;
 
                 const last = parseFloat(value.last);
                 const vol = parseFloat(value.vol_idr);
