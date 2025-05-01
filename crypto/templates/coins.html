@@ -6,29 +6,16 @@
 {% block content %}
 <div class="col" style="padding:10px">
     <div class=smallheader>
-        <h2>Coins</h2>
+        <h2>All Coins</h2>
     </div>
-    <input type="text" id="tokenSearch" placeholder="Search tokens..." class="form-control"
-    style="
-        width: 300px;
-        margin-bottom: 10px;
-        padding: 8px 12px;
-        background-color: #1e2732;
-        border: 1px solid #3b4451;
-        border-radius: 6px;
-        color: #ffffff;
-        font-size: 14px;
-        outline: none;
-        transition: border 0.3s ease, box-shadow 0.3s ease;
-    "
-    onfocus="this.style.border='1px solid #4f93ff'; this.style.boxShadow='0 0 5px rgba(79, 147, 255, 0.5)'"
-    onblur="this.style.border='1px solid #3b4451'; this.style.boxShadow='none'">
+    <input type="text" id="tokenSearch" placeholder="Search tokens..." class="form-control">
 
     <table id="tickers-table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th style="text-align: end;">Price</th>
+            </tr>
         </thead>
         <tbody id="tickers-body">
             {% for coin, value in tickers.items %}
@@ -44,26 +31,25 @@
     </table>
 </div>
 <script>
-let previousValues = {};
+const tokenSearch = document.getElementById('tokenSearch');
+const tbody = document.getElementById('tickers-body');
+const previousValues = {};
 
 function formatNumber(num) {
-    return new Intl.NumberFormat('en-US').format(num);
+    return num.toLocaleString('en-US');
 }
 
 function updateTickers() {
     fetch('/tickers-api/')
         .then(response => response.json())
         .then(data => {
-            const tbody = document.getElementById('tickers-body');
-            const searchTerm = document.getElementById('tokenSearch').value.toLowerCase();
-
-            tbody.innerHTML = ''; // Clear table
+            const searchTerm = tokenSearch.value.toLowerCase();
+            tbody.innerHTML = '';
 
             for (const [coin, value] of Object.entries(data.tickers)) {
-                const formattedCoin = coin.replace('_idr', '').toUpperCase();
+                const formattedCoin = coin.replace('_', '/').toUpperCase();
                 const coinMatch = formattedCoin.toLowerCase().includes(searchTerm);
 
-                // Only update rows matching search
                 if (!coinMatch) continue;
 
                 const last = parseFloat(value.last);
@@ -92,27 +78,23 @@ function updateTickers() {
                 previousValues[coin] = last;
             }
 
-            // Remove flash after delay
             setTimeout(() => {
                 document.querySelectorAll('.flash-green, .flash-red').forEach(el => {
                     el.classList.remove('flash-green', 'flash-red');
                 });
-            }, 500);
+            }, 19000);
         });
 }
 
+// Initial load
 updateTickers();
+
+// Regular update
 setInterval(updateTickers, 20000);
 
-document.getElementById('tokenSearch').addEventListener('input', function () {
-    const filter = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#tickers-body tr');
+// Live filtering with data reload
+tokenSearch.addEventListener('input', updateTickers);
 
-    rows.forEach(row => {
-        const token = row.querySelector('td').textContent.toLowerCase();
-        row.style.display = token.includes(filter) ? '' : 'none';
-    });
-});
 </script>
     
 {% endblock %}
