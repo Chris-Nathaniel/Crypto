@@ -21,16 +21,23 @@
             {% for token, data in wallet.items %}
             <tr>
                 <td>
-                    <div style="text-align:start; margin-bottom: 5px;">
-                        <strong>
-                            {{ token }} 
-                        </strong>
+                    <div style="display: flex; flex-direction:row;">
+                        <div>
+                            <img src="{{data.logo}}" style="width: 50px; height: 50px; margin-right: 5px;">
+                        </div>
+                        <div>
+                            <div style="text-align:start; margin-bottom: 5px;">
+                                <strong>
+                                    {{ token }} 
+                                </strong>
+                            </div>
+                            <div style="color:rgb(203, 201, 199);">
+                                <small> Balance: {{ data.balance|intcomma }}</small>
+                                <br>
+                                <small>Avg: {{ data.average_price|intcomma }}</small>
+                            </div>       
+                        </div>
                     </div>
-                    <div style="color:rgb(203, 201, 199);">
-                        <small> Balance: {{ data.balance|intcomma }}</small>
-                        <br>
-                        <small>Avg: {{ data.average_price|intcomma }}</small>
-                    </div>       
                 </td>
 
                 <td>
