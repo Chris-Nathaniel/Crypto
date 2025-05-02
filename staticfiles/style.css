@@ -150,7 +150,7 @@ th {
     padding: 5px;
     background-color: #121111;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
     font-size: 12px;
 }

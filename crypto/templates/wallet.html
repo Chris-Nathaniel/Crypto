@@ -15,24 +15,33 @@
         <thead>
             <tr>
                 <th>Token</th>
-                <th>Balance</th>
-                <th>Quantity</th>
+                <th style="text-align:end;">Quantity</th>
         </thead>
         <tbody>
-            {% for token in wallet %}
+            {% for token, data in wallet.items %}
             <tr>
-                <td>{{ token.token }}</td>
                 <td>
-                    <strong>{{ token.balance|intcomma }}</strong>
-                    <br>
-                    <small>Avg: {{ token.average_price|intcomma }}</small>
+                    <div style="text-align:start; margin-bottom: 5px;">
+                        <strong>
+                            {{ token }} 
+                        </strong>
+                    </div>
+                    <div style="color:rgb(203, 201, 199);">
+                        <small> Balance: {{ data.balance|intcomma }}</small>
+                        <br>
+                        <small>Avg: {{ data.average_price|intcomma }}</small>
+                    </div>       
                 </td>
+
                 <td>
                     <div style="text-align:end; margin:5px;">
-                        <strong>{{ token.quantity|intcomma }} {{ token.token }}</strong>
+                        <strong>{{ data.quantity|intcomma }} {{ token }}</strong>
                     </div>   
-                    <div class="roi {% if token.return_on_investment > 0 %}green{% elif token.return_on_investment < 0 %}red{% endif %}">
-                        <small>{{ token.return_on_investment|intcomma }} IDR</small>
+                    <div class="{% if data.unrealized > 0 %}green{% elif data.unrealized < 0 %}red{% else %}neutral{% endif %}" style="text-align: end; margin: 5px;">
+                        <small style="font-weight: bold;">{{ data.unrealized|intcomma }} IDR</small>
+                    </div>                    
+                    <div class="roi {% if data.return_on_investment > 0 %}green{% elif data.return_on_investment < 0 %}red{% endif %}">
+                        <small>{{ data.return_on_investment|intcomma }} IDR</small>
                     </div>    
                 
                 </td>

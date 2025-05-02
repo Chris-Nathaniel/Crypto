@@ -57,9 +57,22 @@ def transaction_view(request):
 @user_authenticated
 def wallet_view(request):
     user = request.session.get("user")
-
     wallet = Wallet.objects.filter(session_id=user).order_by('-quantity')
-    return render(request, 'wallet.html', {'wallet': wallet, 'session_id': user})
+    tickers = get_indodax_tickers()
+    tickers_price = {ticker_id: data['last'] for ticker_id, data in tickers.items()}
+    wallet_data = {
+    token.token: {
+        'quantity': Decimal(token.quantity),
+        'average_price': Decimal(token.average_price),
+        'current_price': Decimal(tickers_price.get(f"{token.token.lower()}_idr", 0)),
+        'unrealized': round((Decimal(tickers_price.get(f"{token.token.lower()}_idr", 0))* token.quantity * Decimal(1 - baseCost)) - Decimal(token.balance) ,2) if token.quantity > 0 else Decimal('0'),
+        'balance': Decimal(token.balance),
+        'return_on_investment': Decimal(token.return_on_investment),
+    }
+    for token in wallet
+}
+
+    return render(request, 'wallet.html', {'wallet': wallet_data, 'session_id': user})
 
 def buy_token(form, fee, id):
     global baseCost

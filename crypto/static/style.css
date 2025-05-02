@@ -148,9 +148,9 @@ th {
 .roi {
     border-radius: 10px;
     padding: 5px;
-    background-color: #121111;
+    background-color: #434f64;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
     font-size: 12px;
 }
