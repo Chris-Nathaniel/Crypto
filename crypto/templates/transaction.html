@@ -14,7 +14,6 @@
             <tr>
                 <th>Token</th>
                 <th>Amount</th>
-                <th>Date</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -30,10 +29,10 @@
                     <br>
                     <small>
                         Price: {{ transaction.price|intcomma }} |
-                        Qty: {{ transaction.quantity|intcomma }}
+                        Qty: {{ transaction.quantity|intcomma }} |
+                        Date: {{ transaction.date|date:"d-m-y" }}
                     </small>
-                </td>
-                <td>{{ transaction.date|date:"d-m-y" }}</td>
+                </td> 
                 <td style="display: flex; align-items: center; justify-content: center;">
                     <form method="post" action="{% url 'crypto:delete_transaction' transaction.id %}">
                         {% csrf_token %}
